@@ -4,7 +4,8 @@
 
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Platform](https://img.shields.io/badge/platform-Windows-blue.svg)]()
+[![Version](https://img.shields.io/badge/version-1.0.0-green.svg)](https://github.com/AlvaFG/Voice-IT/releases)
+[![Platform](https://img.shields.io/badge/platform-Windows-blue.svg)](https://github.com/AlvaFG/Voice-IT)
 
 ---
 
@@ -105,8 +106,8 @@ That's it! You're ready to use Voice IT.
 
 ```bash
 # Clone repository
-git clone https://github.com/yourusername/voice-it.git
-cd voice-it
+git clone https://github.com/AlvaFG/Voice-IT.git
+cd Voice-IT
 
 # Create virtual environment (recommended)
 python -m venv venv
@@ -130,7 +131,7 @@ The executable will be at `dist/VoiceIT.exe`
 
 ### Option 3: Download Release
 
-Download the latest `.exe` from [Releases](https://github.com/yourusername/voice-it/releases).
+Download the latest `.exe` from [Releases](https://github.com/AlvaFG/Voice-IT/releases).
 
 ---
 
