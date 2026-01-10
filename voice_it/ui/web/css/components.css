@@ -1,0 +1,566 @@
+/**
+ * Voice IT - Component Styles
+ * Buttons, Cards, Inputs, Badges, etc.
+ */
+
+/* ==========================================================================
+   BUTTONS
+   ========================================================================== */
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-xs);
+    padding: var(--space-sm) var(--space-lg);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-small);
+    font-weight: var(--font-weight-bold);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border: none;
+    cursor: pointer;
+    transition: all var(--duration-fast) var(--ease-default);
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Primary button */
+.btn-primary {
+    background: var(--accent);
+    color: var(--bg-primary);
+}
+
+.btn-primary:hover:not(:disabled) {
+    background: var(--accent-hover);
+    box-shadow: var(--shadow-glow-accent);
+}
+
+/* Ghost button */
+.btn-ghost {
+    background: transparent;
+    color: var(--text-primary);
+    border: 1px solid var(--border-default);
+}
+
+.btn-ghost:hover:not(:disabled) {
+    background: var(--bg-surface-hover);
+    border-color: var(--border-accent);
+}
+
+/* Danger button */
+.btn-danger {
+    background: var(--status-red);
+    color: var(--text-primary);
+}
+
+.btn-danger:hover:not(:disabled) {
+    background: #ff4466;
+    box-shadow: var(--shadow-glow-red);
+}
+
+/* Small button */
+.btn-sm {
+    padding: var(--space-xs) var(--space-sm);
+    font-size: var(--font-size-tiny);
+}
+
+/* Icon button */
+.btn-icon {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    color: var(--text-muted);
+    border: 1px solid transparent;
+    transition: all var(--duration-fast);
+}
+
+.btn-icon:hover {
+    color: var(--text-primary);
+    background: var(--bg-surface-hover);
+}
+
+.btn-icon.btn-danger:hover {
+    color: var(--status-red);
+    background: rgba(255, 51, 85, 0.1);
+}
+
+.btn-icon i {
+    width: 16px;
+    height: 16px;
+}
+
+/* ==========================================================================
+   CARDS
+   ========================================================================== */
+
+.card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-default);
+    padding: var(--space-md);
+    transition: border-color var(--duration-fast);
+}
+
+.card:hover {
+    border-color: var(--border-accent);
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--space-sm);
+}
+
+.card-content {
+    flex: 1;
+}
+
+.card-text {
+    font-size: var(--font-size-small);
+    color: var(--text-primary);
+    line-height: var(--line-height-normal);
+}
+
+.card-time {
+    font-size: var(--font-size-micro);
+    color: var(--text-muted);
+    margin-top: var(--space-xs);
+    display: block;
+}
+
+.card-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    margin-top: var(--space-sm);
+    padding-top: var(--space-sm);
+    border-top: 1px solid var(--border-default);
+}
+
+/* History card */
+.history-card {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Snippet card */
+.snippet-card .snippet-trigger {
+    font-size: var(--font-size-body);
+    color: var(--accent);
+    font-weight: var(--font-weight-bold);
+}
+
+/* Word card */
+.word-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.word-card .card-content {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-md);
+}
+
+.word-text {
+    font-size: var(--font-size-body);
+    color: var(--text-primary);
+    font-weight: var(--font-weight-bold);
+}
+
+.word-hint {
+    font-size: var(--font-size-small);
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+.word-card .card-actions {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;
+}
+
+/* ==========================================================================
+   INPUTS
+   ========================================================================== */
+
+.input {
+    width: 100%;
+    padding: var(--space-sm) var(--space-md);
+    background: var(--bg-primary);
+    border: 1px solid var(--border-default);
+    color: var(--text-primary);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-body);
+    transition: border-color var(--duration-fast);
+}
+
+.input:focus {
+    border-color: var(--accent);
+    outline: none;
+}
+
+.input::placeholder {
+    color: var(--text-muted);
+}
+
+/* Select input */
+.select-input {
+    padding: var(--space-xs) var(--space-sm);
+    background: var(--bg-surface);
+    border: 1px solid var(--border-default);
+    color: var(--text-primary);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-small);
+    cursor: pointer;
+}
+
+.select-input:focus {
+    border-color: var(--accent);
+    outline: none;
+}
+
+.select-input option {
+    background: var(--bg-surface);
+    color: var(--text-primary);
+}
+
+/* ==========================================================================
+   BADGES
+   ========================================================================== */
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    padding: var(--space-xxs) var(--space-sm);
+    background: var(--accent-dim);
+    color: var(--accent);
+    font-size: var(--font-size-micro);
+    font-weight: var(--font-weight-bold);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.badge-success {
+    background: rgba(0, 255, 136, 0.2);
+    color: var(--status-green);
+}
+
+.badge-warning {
+    background: var(--amber-dim);
+    color: var(--amber);
+}
+
+.badge-danger {
+    background: rgba(255, 51, 85, 0.2);
+    color: var(--status-red);
+}
+
+/* ==========================================================================
+   TOGGLE SWITCH
+   ========================================================================== */
+
+.toggle {
+    position: relative;
+    width: 40px;
+    height: 20px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    transition: all var(--duration-fast);
+}
+
+.toggle.active {
+    background: var(--accent-dim);
+    border-color: var(--accent);
+}
+
+.toggle-knob {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 14px;
+    height: 14px;
+    background: var(--text-muted);
+    border-radius: 50%;
+    transition: all var(--duration-fast);
+}
+
+.toggle.active .toggle-knob {
+    left: 22px;
+    background: var(--accent);
+}
+
+/* ==========================================================================
+   KEYBOARD SHORTCUT
+   ========================================================================== */
+
+kbd {
+    display: inline-flex;
+    align-items: center;
+    padding: var(--space-xxs) var(--space-sm);
+    background: var(--bg-surface);
+    border: 1px solid var(--border-default);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-tiny);
+    color: var(--text-secondary);
+}
+
+.hotkey-display {
+    padding: var(--space-xs) var(--space-md);
+    font-size: var(--font-size-small);
+    color: var(--accent);
+}
+
+/* ==========================================================================
+   PROVIDER CARDS
+   ========================================================================== */
+
+.provider-cards {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+
+.provider-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-md);
+    background: var(--bg-surface);
+    border: 1px solid var(--border-default);
+    transition: all var(--duration-fast);
+}
+
+.provider-card:hover {
+    border-color: var(--border-accent);
+}
+
+.provider-card.connected {
+    border-color: var(--status-green);
+}
+
+.provider-card.active {
+    background: rgba(0, 229, 204, 0.05);
+    border-color: var(--accent);
+}
+
+.provider-info {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xxs);
+}
+
+.provider-name {
+    font-size: var(--font-size-body);
+    font-weight: var(--font-weight-bold);
+    color: var(--text-primary);
+}
+
+.provider-status {
+    font-size: var(--font-size-tiny);
+    color: var(--text-muted);
+}
+
+.provider-card.connected .provider-status {
+    color: var(--status-green);
+}
+
+/* ==========================================================================
+   LOADING SPINNER
+   ========================================================================== */
+
+.spinner {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--border-default);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+.spinner-sm {
+    width: 14px;
+    height: 14px;
+    border-width: 1px;
+}
+
+/* ==========================================================================
+   TOAST NOTIFICATION
+   ========================================================================== */
+
+.toast {
+    position: fixed;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    padding: var(--space-sm) var(--space-lg);
+    background: var(--bg-surface-elevated);
+    border: 1px solid var(--border-default);
+    color: var(--text-primary);
+    font-size: var(--font-size-small);
+    opacity: 0;
+    visibility: hidden;
+    transition: all var(--duration-normal);
+    z-index: var(--z-toast);
+}
+
+.toast.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+}
+
+.toast.success {
+    border-color: var(--status-green);
+}
+
+.toast.error {
+    border-color: var(--status-red);
+}
+
+/* ==========================================================================
+   MODAL
+   ========================================================================== */
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: var(--z-modal, 1000);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal.hidden {
+    display: none;
+}
+
+.modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+}
+
+.modal-content {
+    position: relative;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-accent);
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), var(--shadow-glow-accent);
+    animation: modal-appear 0.2s ease-out;
+}
+
+@keyframes modal-appear {
+    from {
+        opacity: 0;
+        transform: scale(0.95) translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-md) var(--space-lg);
+    border-bottom: 1px solid var(--border-default);
+}
+
+.modal-title {
+    font-size: var(--font-size-body);
+    font-weight: var(--font-weight-bold);
+    color: var(--text-primary);
+    margin: 0;
+    letter-spacing: 0.5px;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: var(--space-xs);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color var(--duration-fast);
+}
+
+.modal-close:hover {
+    color: var(--text-primary);
+}
+
+.modal-close i {
+    width: 18px;
+    height: 18px;
+}
+
+.modal-body {
+    padding: var(--space-lg);
+}
+
+.modal-description {
+    font-size: var(--font-size-small);
+    color: var(--text-secondary);
+    margin: 0 0 var(--space-md) 0;
+}
+
+.modal-hint {
+    font-size: var(--font-size-tiny);
+    color: var(--text-muted);
+    margin: var(--space-md) 0 0 0;
+}
+
+.modal-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--space-sm);
+    padding: var(--space-md) var(--space-lg);
+    border-top: 1px solid var(--border-default);
+    background: var(--bg-primary);
+}
+
+/* Input field for modal */
+.input-field {
+    width: 100%;
+    padding: var(--space-sm) var(--space-md);
+    background: var(--bg-primary);
+    border: 1px solid var(--border-default);
+    color: var(--text-primary);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-body);
+    transition: border-color var(--duration-fast);
+}
+
+.input-field:focus {
+    border-color: var(--accent);
+    outline: none;
+    box-shadow: 0 0 0 2px var(--accent-dim);
+}
+
+.input-field::placeholder {
+    color: var(--text-muted);
+}

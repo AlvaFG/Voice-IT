@@ -1,0 +1,216 @@
+/**
+ * Voice IT - CSS Theme Variables
+ * Mission Control Terminal Aesthetic
+ */
+
+:root {
+    /* ==========================================================================
+       COLORS - Command Center Theme
+       ========================================================================== */
+
+    /* Backgrounds - Deep space blacks */
+    --bg-primary: #0D0D0D;
+    --bg-alt: #111111;
+    --bg-surface: #1A1A1A;
+    --bg-surface-hover: #222222;
+    --bg-surface-elevated: #252525;
+
+    /* Borders */
+    --border-default: #2A2A2A;
+    --border-accent: #333333;
+
+    /* Text - High contrast terminal style */
+    --text-primary: #E8E8E8;
+    --text-secondary: #B0B0B0;
+    --text-muted: #707070;
+    --text-disabled: #454545;
+
+    /* Primary Accent - Cyber Cyan */
+    --accent: #00E5CC;
+    --accent-hover: #00FFE0;
+    --accent-dim: #008577;
+    --accent-glow: #1A3D38;
+
+    /* Secondary Accent - Amber (recording/warnings) */
+    --amber: #FFB800;
+    --amber-hover: #FFCC33;
+    --amber-dim: #805C00;
+    --amber-glow: #3D2E00;
+
+    /* Status Colors */
+    --status-green: #00FF88;
+    --status-red: #FF3355;
+    --status-yellow: #FFCC00;
+    --status-blue: #00AAFF;
+
+    /* Special Effects */
+    --scanline: #1A1A1A;
+    --grid: #151515;
+    --pulse-ring: #1A3D38;
+
+    /* ==========================================================================
+       TYPOGRAPHY - Monospace Command Style
+       ========================================================================== */
+
+    /* Font Families */
+    --font-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+    --font-system: 'Segoe UI', 'SF Pro Display', system-ui, sans-serif;
+
+    /* Font Sizes */
+    --font-size-display: 32px;
+    --font-size-title: 20px;
+    --font-size-heading: 16px;
+    --font-size-body: 13px;
+    --font-size-small: 11px;
+    --font-size-tiny: 9px;
+    --font-size-micro: 8px;
+
+    /* Font Weights */
+    --font-weight-normal: 400;
+    --font-weight-medium: 500;
+    --font-weight-bold: 700;
+
+    /* Line Heights */
+    --line-height-tight: 1.2;
+    --line-height-normal: 1.5;
+    --line-height-relaxed: 1.75;
+
+    /* ==========================================================================
+       SPACING - 4px Base Grid
+       ========================================================================== */
+
+    --space-xxs: 2px;
+    --space-xs: 4px;
+    --space-sm: 8px;
+    --space-md: 12px;
+    --space-lg: 16px;
+    --space-xl: 24px;
+    --space-xxl: 32px;
+    --space-xxxl: 48px;
+
+    /* ==========================================================================
+       BORDERS & RADIUS
+       ========================================================================== */
+
+    --border-width: 1px;
+    --border-width-thick: 2px;
+
+    --radius-none: 0;
+    --radius-sm: 2px;
+    --radius-md: 4px;
+    --radius-lg: 8px;
+    --radius-full: 999px;
+
+    /* ==========================================================================
+       SHADOWS & EFFECTS
+       ========================================================================== */
+
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
+    --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.5);
+    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.6);
+    --shadow-glow-accent: 0 0 20px rgba(0, 229, 204, 0.3);
+    --shadow-glow-amber: 0 0 20px rgba(255, 184, 0, 0.3);
+    --shadow-glow-red: 0 0 20px rgba(255, 51, 85, 0.3);
+
+    /* ==========================================================================
+       ANIMATIONS
+       ========================================================================== */
+
+    --duration-fast: 150ms;
+    --duration-normal: 250ms;
+    --duration-slow: 400ms;
+    --duration-pulse: 1500ms;
+
+    --ease-default: ease;
+    --ease-out: ease-out;
+    --ease-in-out: ease-in-out;
+
+    /* ==========================================================================
+       WINDOW DIMENSIONS
+       ========================================================================== */
+
+    --window-width: 520px;
+    --window-height: 720px;
+    --window-min-width: 440px;
+    --window-min-height: 560px;
+
+    --header-height: 56px;
+    --footer-height: 56px;
+
+    /* Recording indicator */
+    --indicator-width: 200px;
+    --indicator-height: 60px;
+
+    /* ==========================================================================
+       Z-INDEX SCALE
+       ========================================================================== */
+
+    --z-base: 0;
+    --z-dropdown: 100;
+    --z-sticky: 200;
+    --z-modal: 300;
+    --z-overlay: 400;
+    --z-toast: 500;
+}
+
+/* ==========================================================================
+   KEYFRAME ANIMATIONS
+   ========================================================================== */
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+@keyframes pulse-ring {
+    0% {
+        transform: scale(1);
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(1.5);
+        opacity: 0;
+    }
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slide-up {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes glow-pulse {
+    0%, 100% {
+        box-shadow: var(--shadow-glow-red);
+    }
+    50% {
+        box-shadow: 0 0 30px rgba(255, 51, 85, 0.5);
+    }
+}

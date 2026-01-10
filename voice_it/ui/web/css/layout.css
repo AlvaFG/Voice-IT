@@ -1,0 +1,319 @@
+/**
+ * Voice IT - Layout Styles
+ * App structure, header, footer, content areas
+ */
+
+/* ==========================================================================
+   APP LAYOUT
+   ========================================================================== */
+
+.app {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background: var(--bg-primary);
+    overflow: hidden;
+}
+
+/* ==========================================================================
+   HEADER
+   ========================================================================== */
+
+.header {
+    height: var(--header-height);
+    min-height: var(--header-height);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 var(--space-lg);
+    background: var(--bg-primary);
+    border-bottom: 1px solid var(--border-default);
+    flex-shrink: 0;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+}
+
+.header-bracket {
+    color: var(--text-muted);
+    font-size: var(--font-size-title);
+}
+
+.header-title {
+    font-size: var(--font-size-heading);
+    font-weight: var(--font-weight-bold);
+    color: var(--text-primary);
+    letter-spacing: 2px;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+}
+
+/* ==========================================================================
+   CONTENT AREA
+   ========================================================================== */
+
+.content {
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+}
+
+/* ==========================================================================
+   VIEW CONTAINERS
+   ========================================================================== */
+
+.view {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: var(--space-lg);
+    overflow-y: auto;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: opacity var(--duration-normal) ease,
+                visibility var(--duration-normal) ease,
+                transform var(--duration-normal) ease;
+}
+
+.view.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* ==========================================================================
+   FOOTER NAVIGATION
+   ========================================================================== */
+
+.footer {
+    height: var(--footer-height);
+    min-height: var(--footer-height);
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    background: var(--bg-surface);
+    border-top: 1px solid var(--border-default);
+    flex-shrink: 0;
+}
+
+.nav-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    padding: var(--space-sm) var(--space-md);
+    color: var(--text-muted);
+    transition: color var(--duration-fast);
+    position: relative;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.nav-btn:hover {
+    color: var(--text-secondary);
+}
+
+.nav-btn.active {
+    color: var(--accent);
+}
+
+.nav-btn.active::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 24px;
+    height: 2px;
+    background: var(--accent);
+}
+
+.nav-btn i {
+    width: 20px;
+    height: 20px;
+}
+
+.nav-label {
+    font-size: var(--font-size-micro);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-family: var(--font-mono);
+}
+
+/* ==========================================================================
+   VIEW HEADER
+   ========================================================================== */
+
+.view-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--space-lg);
+}
+
+.view-title {
+    font-size: var(--font-size-title);
+    font-weight: var(--font-weight-bold);
+    color: var(--text-primary);
+    letter-spacing: 1px;
+}
+
+.view-badge {
+    background: var(--accent-dim);
+    color: var(--accent);
+    padding: var(--space-xxs) var(--space-sm);
+    font-size: var(--font-size-micro);
+    text-transform: uppercase;
+    font-family: var(--font-mono);
+}
+
+/* ==========================================================================
+   SEARCH
+   ========================================================================== */
+
+.search-container {
+    position: relative;
+    margin-bottom: var(--space-lg);
+}
+
+.search-input {
+    width: 100%;
+    padding: var(--space-sm) var(--space-md);
+    padding-left: 40px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-default);
+    color: var(--text-primary);
+    font-size: var(--font-size-body);
+    font-family: var(--font-mono);
+    transition: border-color var(--duration-fast);
+}
+
+.search-input:focus {
+    border-color: var(--accent);
+    outline: none;
+}
+
+.search-input::placeholder {
+    color: var(--text-muted);
+}
+
+.search-icon {
+    position: absolute;
+    left: var(--space-md);
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    width: 16px;
+    height: 16px;
+    pointer-events: none;
+}
+
+/* ==========================================================================
+   LIST CONTAINER
+   ========================================================================== */
+
+.list-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+
+/* ==========================================================================
+   EMPTY STATE
+   ========================================================================== */
+
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-xxxl) var(--space-lg);
+    text-align: center;
+}
+
+.empty-state i {
+    width: 48px;
+    height: 48px;
+    color: var(--text-muted);
+    margin-bottom: var(--space-lg);
+    opacity: 0.5;
+}
+
+.empty-state-text {
+    color: var(--text-muted);
+    font-size: var(--font-size-small);
+}
+
+/* ==========================================================================
+   SETTINGS LAYOUT
+   ========================================================================== */
+
+.settings-section {
+    margin-bottom: var(--space-xl);
+}
+
+.settings-section-title {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-md);
+    padding-bottom: var(--space-sm);
+    border-bottom: 1px solid var(--border-default);
+    font-size: var(--font-size-small);
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.settings-section-title i {
+    width: 14px;
+    height: 14px;
+}
+
+.setting-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-sm) 0;
+}
+
+.setting-label {
+    font-size: var(--font-size-small);
+    color: var(--text-secondary);
+}
+
+.setting-value {
+    font-size: var(--font-size-small);
+    color: var(--text-primary);
+}
+
+/* ==========================================================================
+   SECTION HEADER
+   ========================================================================== */
+
+.section-header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-md);
+    padding-bottom: var(--space-sm);
+    border-bottom: 1px solid var(--border-default);
+}
+
+.section-title {
+    font-size: var(--font-size-tiny);
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}

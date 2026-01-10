@@ -1,0 +1,41 @@
+# Voice IT - Default Configuration
+# This file shows all available configuration options
+
+general:
+  start_with_os: false
+  minimize_to_tray: true
+  show_notifications: true
+  language: en
+
+hotkeys:
+  dictation:
+    windows: [ctrl, win]
+    linux: [ctrl, super]
+    macos: [ctrl, cmd]
+  command_mode:
+    windows: [ctrl, shift, win]
+    linux: [ctrl, shift, super]
+    macos: [ctrl, shift, cmd]
+
+audio:
+  microphone: default
+  sample_rate: 16000
+  channels: 1
+  max_duration_seconds: 300
+
+provider:
+  active: claude
+  auto_failover: true
+  connected:
+    claude: false
+    chatgpt: false
+    gemini: false
+
+appearance:
+  theme: dark
+  accent_color: "#00D4AA"
+
+advanced:
+  debug_mode: false
+  keep_audio_files: false
+  auto_update: true

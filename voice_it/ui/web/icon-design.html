@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voice IT - Icon Design</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #1A1A1A;
+            --bg-card: #242424;
+            --cyan: #00D9FF;
+            --cyan-glow: rgba(0, 217, 255, 0.3);
+            --cyan-dim: rgba(0, 217, 255, 0.6);
+            --white: #FFFFFF;
+            --grey: #888888;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg-dark);
+            color: var(--white);
+            font-family: 'Space Grotesk', sans-serif;
+            min-height: 100vh;
+            padding: 40px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, var(--white) 0%, var(--cyan) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            color: var(--grey);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            margin-bottom: 48px;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            color: var(--cyan);
+            margin: 40px 0 24px;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+        }
+
+        .icon-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 48px;
+        }
+
+        .icon-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 32px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 24px;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: all 0.3s ease;
+        }
+
+        .icon-card:hover {
+            border-color: var(--cyan-dim);
+            box-shadow: 0 0 40px var(--cyan-glow);
+            transform: translateY(-4px);
+        }
+
+        .icon-display {
+            width: 128px;
+            height: 128px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .icon-name {
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .icon-desc {
+            color: var(--grey);
+            font-size: 0.85rem;
+            text-align: center;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .size-row {
+            display: flex;
+            gap: 24px;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .size-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .size-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--grey);
+        }
+
+        .recommended {
+            position: relative;
+        }
+
+        .recommended::after {
+            content: '★ RECOMMENDED';
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.65rem;
+            color: var(--cyan);
+            font-family: 'JetBrains Mono', monospace;
+            white-space: nowrap;
+        }
+
+        /* Animation for the primary icon */
+        @keyframes pulse-glow {
+            0%, 100% { filter: drop-shadow(0 0 8px var(--cyan-glow)); }
+            50% { filter: drop-shadow(0 0 20px var(--cyan)); }
+        }
+
+        .icon-card.primary .icon-display svg {
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+
+        .export-section {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 32px;
+            margin-top: 48px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .export-title {
+            font-size: 1rem;
+            margin-bottom: 16px;
+            color: var(--cyan);
+        }
+
+        .code-block {
+            background: var(--bg-dark);
+            border-radius: 8px;
+            padding: 16px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            overflow-x: auto;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .code-block code {
+            color: var(--grey);
+        }
+
+        .code-block .tag { color: #ff79c6; }
+        .code-block .attr { color: var(--cyan); }
+        .code-block .value { color: #f1fa8c; }
+    </style>
+</head>
+<body>
+    <h1>Voice IT Icon System</h1>
+    <p class="subtitle">// voice-to-text • dark IT aesthetic • #00D9FF</p>
+
+    <div class="section-title">◆ PRIMARY ICON — Waveform Cursor</div>
+    <div class="icon-grid">
+        <div class="icon-card primary recommended">
+            <div class="icon-display">
+                <!-- Primary Icon: Sound waves transforming into text cursor -->
+                <svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Background circle -->
+                    <circle cx="64" cy="64" r="60" fill="#1A1A1A" stroke="#00D9FF" stroke-width="2"/>
+
+                    <!-- Sound wave bars (left side - voice input) -->
+                    <rect x="24" y="52" width="4" height="24" rx="2" fill="#00D9FF" opacity="0.5"/>
+                    <rect x="32" y="44" width="4" height="40" rx="2" fill="#00D9FF" opacity="0.7"/>
+                    <rect x="40" y="36" width="4" height="56" rx="2" fill="#00D9FF"/>
+                    <rect x="48" y="44" width="4" height="40" rx="2" fill="#00D9FF" opacity="0.7"/>
+
+                    <!-- Arrow/transform indicator -->
+                    <path d="M58 64 L68 64 M65 58 L71 64 L65 70" stroke="#00D9FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.6"/>
+
+                    <!-- Text cursor (right side - text output) -->
+                    <rect x="76" y="36" width="3" height="56" rx="1.5" fill="#00D9FF"/>
+
+                    <!-- Text lines suggestion -->
+                    <rect x="84" y="44" width="20" height="3" rx="1.5" fill="#00D9FF" opacity="0.4"/>
+                    <rect x="84" y="54" width="16" height="3" rx="1.5" fill="#00D9FF" opacity="0.3"/>
+                    <rect x="84" y="64" width="18" height="3" rx="1.5" fill="#00D9FF" opacity="0.4"/>
+                    <rect x="84" y="74" width="14" height="3" rx="1.5" fill="#00D9FF" opacity="0.3"/>
+                </svg>
+            </div>
+            <div class="icon-name">Waveform → Cursor</div>
+            <div class="icon-desc">Sound waves transform into text cursor<br/>Best for app icon & large displays</div>
+        </div>
+    </div>
+
+    <div class="section-title">◆ ALTERNATIVE CONCEPTS</div>
+    <div class="icon-grid">
+        <div class="icon-card">
+            <div class="icon-display">
+                <!-- Alt 1: Microphone with pulse -->
+                <svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="64" cy="64" r="60" fill="#1A1A1A" stroke="#00D9FF" stroke-width="2"/>
+
+                    <!-- Microphone body -->
+                    <rect x="52" y="32" width="24" height="40" rx="12" fill="none" stroke="#00D9FF" stroke-width="3"/>
+
+                    <!-- Mic stand -->
+                    <path d="M44 68 Q44 88 64 88 Q84 88 84 68" fill="none" stroke="#00D9FF" stroke-width="3" stroke-linecap="round"/>
+                    <line x1="64" y1="88" x2="64" y2="98" stroke="#00D9FF" stroke-width="3" stroke-linecap="round"/>
+                    <line x1="52" y1="98" x2="76" y2="98" stroke="#00D9FF" stroke-width="3" stroke-linecap="round"/>
+
+                    <!-- Sound waves -->
+                    <path d="M36 52 Q28 64 36 76" fill="none" stroke="#00D9FF" stroke-width="2" stroke-linecap="round" opacity="0.4"/>
+                    <path d="M28 44 Q16 64 28 84" fill="none" stroke="#00D9FF" stroke-width="2" stroke-linecap="round" opacity="0.25"/>
+                    <path d="M92 52 Q100 64 92 76" fill="none" stroke="#00D9FF" stroke-width="2" stroke-linecap="round" opacity="0.4"/>
+                    <path d="M100 44 Q112 64 100 84" fill="none" stroke="#00D9FF" stroke-width="2" stroke-linecap="round" opacity="0.25"/>
+                </svg>
+            </div>
+            <div class="icon-name">Classic Microphone</div>
+            <div class="icon-desc">Traditional mic with sound waves<br/>Universally recognizable</div>
+        </div>
+
+        <div class="icon-card">
+            <div class="icon-display">
+                <!-- Alt 2: V for Voice with waves -->
+                <svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="64" cy="64" r="60" fill="#1A1A1A" stroke="#00D9FF" stroke-width="2"/>
+
+                    <!-- V shape made of sound bars -->
+                    <rect x="32" y="32" width="6" height="24" rx="3" fill="#00D9FF" opacity="0.5"/>
+                    <rect x="42" y="40" width="6" height="32" rx="3" fill="#00D9FF" opacity="0.7"/>
+                    <rect x="52" y="48" width="6" height="40" rx="3" fill="#00D9FF" opacity="0.85"/>
+                    <rect x="61" y="56" width="6" height="40" rx="3" fill="#00D9FF"/>
+                    <rect x="70" y="48" width="6" height="40" rx="3" fill="#00D9FF" opacity="0.85"/>
+                    <rect x="80" y="40" width="6" height="32" rx="3" fill="#00D9FF" opacity="0.7"/>
+                    <rect x="90" y="32" width="6" height="24" rx="3" fill="#00D9FF" opacity="0.5"/>
+                </svg>
+            </div>
+            <div class="icon-name">V-Wave</div>
+            <div class="icon-desc">"V" shape from equalizer bars<br/>Modern & abstract</div>
+        </div>
+
+        <div class="icon-card">
+            <div class="icon-display">
+                <!-- Alt 3: Minimal - just bars -->
+                <svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="64" cy="64" r="60" fill="#1A1A1A" stroke="#00D9FF" stroke-width="2"/>
+
+                    <!-- Centered equalizer bars -->
+                    <rect x="28" y="54" width="8" height="20" rx="4" fill="#00D9FF" opacity="0.4"/>
+                    <rect x="44" y="42" width="8" height="44" rx="4" fill="#00D9FF" opacity="0.6"/>
+                    <rect x="60" y="32" width="8" height="64" rx="4" fill="#00D9FF"/>
+                    <rect x="76" y="42" width="8" height="44" rx="4" fill="#00D9FF" opacity="0.6"/>
+                    <rect x="92" y="54" width="8" height="20" rx="4" fill="#00D9FF" opacity="0.4"/>
+                </svg>
+            </div>
+            <div class="icon-name">Pure Waveform</div>
+            <div class="icon-desc">Minimal sound visualization<br/>Clean & scalable</div>
+        </div>
+    </div>
+
+    <div class="section-title">◆ SIZE VARIANTS</div>
+    <div class="icon-card">
+        <div class="size-row">
+            <div class="size-item">
+                <svg width="16" height="16" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="64" cy="64" r="60" fill="#1A1A1A" stroke="#00D9FF" stroke-width="4"/>
+                    <rect x="32" y="42" width="8" height="44" rx="4" fill="#00D9FF" opacity="0.7"/>
+                    <rect x="48" y="32" width="8" height="64" rx="4" fill="#00D9FF"/>
+                    <rect x="64" y="42" width="8" height="44" rx="4" fill="#00D9FF" opacity="0.7"/>
+                    <rect x="80" y="52" width="8" height="24" rx="4" fill="#00D9FF" opacity="0.5"/>
+                </svg>
+                <span class="size-label">16×16 favicon</span>
+            </div>
+            <div class="size-item">
+                <svg width="24" height="24" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="64" cy="64" r="60" fill="#1A1A1A" stroke="#00D9FF" stroke-width="4"/>
+                    <rect x="32" y="42" width="8" height="44" rx="4" fill="#00D9FF" opacity="0.7"/>
+                    <rect x="48" y="32" width="8" height="64" rx="4" fill="#00D9FF"/>
+                    <rect x="64" y="42" width="8" height="44" rx="4" fill="#00D9FF" opacity="0.7"/>
+                    <rect x="80" y="52" width="8" height="24" rx="4" fill="#00D9FF" opacity="0.5"/>
+                </svg>
+                <span class="size-label">24×24 tray</span>
+            </div>
+            <div class="size-item">
+                <svg width="32" height="32" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="64" cy="64" r="60" fill="#1A1A1A" stroke="#00D9FF" stroke-width="3"/>
+                    <rect x="28" y="52" width="6" height="24" rx="3" fill="#00D9FF" opacity="0.5"/>
+                    <rect x="40" y="42" width="6" height="44" rx="3" fill="#00D9FF" opacity="0.7"/>
+                    <rect x="52" y="32" width="6" height="64" rx="3" fill="#00D9FF"/>
+                    <rect x="64" y="42" width="6" height="44" rx="3" fill="#00D9FF" opacity="0.7"/>
+                    <rect x="76" y="52" width="6" height="24" rx="3" fill="#00D9FF" opacity="0.5"/>
+                    <rect x="88" y="56" width="6" height="16" rx="3" fill="#00D9FF" opacity="0.3"/>
+                </svg>
+                <span class="size-label">32×32 small</span>
+            </div>
+            <div class="size-item">
+                <svg width="64" height="64" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="64" cy="64" r="60" fill="#1A1A1A" stroke="#00D9FF" stroke-width="2"/>
+                    <rect x="24" y="52" width="4" height="24" rx="2" fill="#00D9FF" opacity="0.5"/>
+                    <rect x="32" y="44" width="4" height="40" rx="2" fill="#00D9FF" opacity="0.7"/>
+                    <rect x="40" y="36" width="4" height="56" rx="2" fill="#00D9FF"/>
+                    <rect x="48" y="44" width="4" height="40" rx="2" fill="#00D9FF" opacity="0.7"/>
+                    <path d="M58 64 L68 64 M65 58 L71 64 L65 70" stroke="#00D9FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.6"/>
+                    <rect x="76" y="36" width="3" height="56" rx="1.5" fill="#00D9FF"/>
+                    <rect x="84" y="44" width="20" height="3" rx="1.5" fill="#00D9FF" opacity="0.4"/>
+                    <rect x="84" y="54" width="16" height="3" rx="1.5" fill="#00D9FF" opacity="0.3"/>
+                    <rect x="84" y="64" width="18" height="3" rx="1.5" fill="#00D9FF" opacity="0.4"/>
+                    <rect x="84" y="74" width="14" height="3" rx="1.5" fill="#00D9FF" opacity="0.3"/>
+                </svg>
+                <span class="size-label">64×64 medium</span>
+            </div>
+            <div class="size-item">
+                <svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="64" cy="64" r="60" fill="#1A1A1A" stroke="#00D9FF" stroke-width="2"/>
+                    <rect x="24" y="52" width="4" height="24" rx="2" fill="#00D9FF" opacity="0.5"/>
+                    <rect x="32" y="44" width="4" height="40" rx="2" fill="#00D9FF" opacity="0.7"/>
+                    <rect x="40" y="36" width="4" height="56" rx="2" fill="#00D9FF"/>
+                    <rect x="48" y="44" width="4" height="40" rx="2" fill="#00D9FF" opacity="0.7"/>
+                    <path d="M58 64 L68 64 M65 58 L71 64 L65 70" stroke="#00D9FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.6"/>
+                    <rect x="76" y="36" width="3" height="56" rx="1.5" fill="#00D9FF"/>
+                    <rect x="84" y="44" width="20" height="3" rx="1.5" fill="#00D9FF" opacity="0.4"/>
+                    <rect x="84" y="54" width="16" height="3" rx="1.5" fill="#00D9FF" opacity="0.3"/>
+                    <rect x="84" y="64" width="18" height="3" rx="1.5" fill="#00D9FF" opacity="0.4"/>
+                    <rect x="84" y="74" width="14" height="3" rx="1.5" fill="#00D9FF" opacity="0.3"/>
+                </svg>
+                <span class="size-label">128×128 large</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="export-section">
+        <div class="export-title">◆ EXPORT - Simplified Icon for Small Sizes (favicon/tray)</div>
+        <div class="code-block">
+            <code><span class="tag">&lt;svg</span> <span class="attr">viewBox</span>=<span class="value">"0 0 128 128"</span> <span class="attr">xmlns</span>=<span class="value">"http://www.w3.org/2000/svg"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;circle</span> <span class="attr">cx</span>=<span class="value">"64"</span> <span class="attr">cy</span>=<span class="value">"64"</span> <span class="attr">r</span>=<span class="value">"60"</span> <span class="attr">fill</span>=<span class="value">"#1A1A1A"</span> <span class="attr">stroke</span>=<span class="value">"#00D9FF"</span> <span class="attr">stroke-width</span>=<span class="value">"4"</span><span class="tag">/&gt;</span>
+  <span class="tag">&lt;rect</span> <span class="attr">x</span>=<span class="value">"32"</span> <span class="attr">y</span>=<span class="value">"42"</span> <span class="attr">width</span>=<span class="value">"8"</span> <span class="attr">height</span>=<span class="value">"44"</span> <span class="attr">rx</span>=<span class="value">"4"</span> <span class="attr">fill</span>=<span class="value">"#00D9FF"</span> <span class="attr">opacity</span>=<span class="value">"0.7"</span><span class="tag">/&gt;</span>
+  <span class="tag">&lt;rect</span> <span class="attr">x</span>=<span class="value">"48"</span> <span class="attr">y</span>=<span class="value">"32"</span> <span class="attr">width</span>=<span class="value">"8"</span> <span class="attr">height</span>=<span class="value">"64"</span> <span class="attr">rx</span>=<span class="value">"4"</span> <span class="attr">fill</span>=<span class="value">"#00D9FF"</span><span class="tag">/&gt;</span>
+  <span class="tag">&lt;rect</span> <span class="attr">x</span>=<span class="value">"64"</span> <span class="attr">y</span>=<span class="value">"42"</span> <span class="attr">width</span>=<span class="value">"8"</span> <span class="attr">height</span>=<span class="value">"44"</span> <span class="attr">rx</span>=<span class="value">"4"</span> <span class="attr">fill</span>=<span class="value">"#00D9FF"</span> <span class="attr">opacity</span>=<span class="value">"0.7"</span><span class="tag">/&gt;</span>
+  <span class="tag">&lt;rect</span> <span class="attr">x</span>=<span class="value">"80"</span> <span class="attr">y</span>=<span class="value">"52"</span> <span class="attr">width</span>=<span class="value">"8"</span> <span class="attr">height</span>=<span class="value">"24"</span> <span class="attr">rx</span>=<span class="value">"4"</span> <span class="attr">fill</span>=<span class="value">"#00D9FF"</span> <span class="attr">opacity</span>=<span class="value">"0.5"</span><span class="tag">/&gt;</span>
+<span class="tag">&lt;/svg&gt;</span></code>
+        </div>
+    </div>
+
+</body>
+</html>

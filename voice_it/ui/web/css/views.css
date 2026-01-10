@@ -1,0 +1,381 @@
+/**
+ * Voice IT - View-Specific Styles
+ * Styles for Home, History, Snippets, Dictionary, Settings views
+ */
+
+/* ==========================================================================
+   HOME VIEW
+   ========================================================================== */
+
+.home-view {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    gap: var(--space-xxl);
+}
+
+/* Mic button container */
+.mic-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Pulse rings animation */
+.pulse-ring {
+    position: absolute;
+    width: 140px;
+    height: 140px;
+    border: 2px solid var(--accent-glow);
+    border-radius: 50%;
+    animation: pulse-ring 2s ease-out infinite;
+}
+
+.pulse-ring:nth-child(2) {
+    animation-delay: 0.5s;
+}
+
+.pulse-ring:nth-child(3) {
+    animation-delay: 1s;
+}
+
+.mic-container.recording .pulse-ring {
+    border-color: rgba(255, 51, 85, 0.3);
+    animation-duration: 1s;
+}
+
+.mic-container.processing .pulse-ring {
+    border-color: var(--amber-glow);
+    animation: spin 2s linear infinite;
+}
+
+/* Mic button */
+.mic-btn {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: var(--bg-surface);
+    border: 2px solid var(--border-accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all var(--duration-fast);
+    position: relative;
+    z-index: 1;
+}
+
+.mic-btn:hover {
+    border-color: var(--accent);
+    box-shadow: var(--shadow-glow-accent);
+}
+
+.mic-btn i {
+    width: 48px;
+    height: 48px;
+    color: var(--accent);
+    transition: color var(--duration-fast);
+}
+
+/* Recording state */
+.mic-container.recording .mic-btn {
+    border-color: var(--status-red);
+    background: rgba(255, 51, 85, 0.1);
+    box-shadow: var(--shadow-glow-red);
+    animation: glow-pulse 1s ease-in-out infinite;
+}
+
+.mic-container.recording .mic-btn i {
+    color: var(--status-red);
+}
+
+/* Processing state */
+.mic-container.processing .mic-btn {
+    border-color: var(--amber);
+    background: rgba(255, 184, 0, 0.1);
+    box-shadow: var(--shadow-glow-amber);
+}
+
+.mic-container.processing .mic-btn i {
+    color: var(--amber);
+    animation: spin 1.5s linear infinite;
+}
+
+/* Status section */
+.status-section {
+    text-align: center;
+}
+
+.status-main {
+    font-size: var(--font-size-body);
+    color: var(--text-secondary);
+    margin-bottom: var(--space-xs);
+}
+
+.status-hint {
+    font-size: var(--font-size-small);
+    color: var(--text-muted);
+}
+
+.status-hint kbd {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-default);
+    padding: 2px 6px;
+    font-family: var(--font-mono);
+    font-size: var(--font-size-tiny);
+    color: var(--accent);
+    margin: 0 2px;
+}
+
+/* Recent transcriptions section */
+.recent-section {
+    width: 100%;
+    max-width: 400px;
+}
+
+.recent-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+
+.recent-item {
+    padding: var(--space-sm) var(--space-md);
+    background: var(--bg-surface);
+    border: 1px solid var(--border-default);
+    transition: border-color var(--duration-fast);
+    cursor: pointer;
+}
+
+.recent-item:hover {
+    border-color: var(--border-accent);
+}
+
+.recent-text {
+    font-size: var(--font-size-small);
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.recent-time {
+    font-size: var(--font-size-micro);
+    color: var(--text-muted);
+    margin-top: var(--space-xxs);
+}
+
+.recent-empty {
+    text-align: center;
+    padding: var(--space-xl);
+    color: var(--text-muted);
+    font-size: var(--font-size-small);
+}
+
+/* ==========================================================================
+   HISTORY VIEW
+   ========================================================================== */
+
+#viewHistory .list-container {
+    max-height: calc(100vh - 240px);
+    overflow-y: auto;
+}
+
+.history-card {
+    display: flex;
+    flex-direction: column;
+}
+
+.history-card .card-text {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* ==========================================================================
+   SETTINGS VIEW
+   ========================================================================== */
+
+#viewSettings {
+    overflow-y: auto;
+}
+
+#viewSettings .list-container {
+    padding: var(--space-md);
+    padding-bottom: var(--space-xl);
+}
+
+/* Settings sections */
+.settings-section {
+    margin-bottom: var(--space-lg);
+    background: var(--bg-surface);
+    border: 1px solid var(--border-default);
+    padding: var(--space-md);
+}
+
+.settings-section-title {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    font-size: var(--font-size-small);
+    font-weight: var(--font-weight-bold);
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: var(--space-md);
+    padding-bottom: var(--space-sm);
+    border-bottom: 1px solid var(--border-default);
+}
+
+.settings-section-title i {
+    width: 16px;
+    height: 16px;
+}
+
+/* Setting rows */
+.setting-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-sm) 0;
+    border-bottom: 1px solid var(--border-default);
+}
+
+.setting-row:last-child {
+    border-bottom: none;
+}
+
+.setting-label {
+    font-size: var(--font-size-body);
+    color: var(--text-primary);
+}
+
+.setting-value {
+    font-size: var(--font-size-body);
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+}
+
+/* Hotkey display */
+.hotkey-display {
+    display: inline-block;
+    padding: var(--space-xs) var(--space-sm);
+    background: var(--bg-base);
+    border: 1px solid var(--border-default);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-small);
+    color: var(--accent);
+}
+
+/* Select input */
+.select-input {
+    padding: var(--space-xs) var(--space-sm);
+    background: var(--bg-base);
+    border: 1px solid var(--border-default);
+    color: var(--text-primary);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-small);
+    cursor: pointer;
+    outline: none;
+    transition: border-color var(--duration-fast);
+}
+
+.select-input:hover,
+.select-input:focus {
+    border-color: var(--accent);
+}
+
+.select-input option {
+    background: var(--bg-surface);
+    color: var(--text-primary);
+}
+
+/* Provider section in settings */
+.provider-cards {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+
+.provider-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-md);
+    background: var(--bg-surface);
+    border: 1px solid var(--border-default);
+    transition: all var(--duration-fast);
+}
+
+.provider-card:hover {
+    border-color: var(--border-accent);
+}
+
+.provider-card.connected {
+    border-color: var(--status-green);
+}
+
+.provider-card.active {
+    background: rgba(0, 229, 204, 0.05);
+    border-color: var(--accent);
+}
+
+.provider-info {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xxs);
+}
+
+.provider-name {
+    font-size: var(--font-size-body);
+    font-weight: var(--font-weight-bold);
+    color: var(--text-primary);
+}
+
+.provider-status {
+    font-size: var(--font-size-tiny);
+    color: var(--text-muted);
+}
+
+.provider-card.connected .provider-status {
+    color: var(--status-green);
+}
+
+/* ==========================================================================
+   SCROLLBAR IN VIEWS
+   ========================================================================== */
+
+.view::-webkit-scrollbar {
+    width: 6px;
+}
+
+.view::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.view::-webkit-scrollbar-thumb {
+    background: var(--border-default);
+    border-radius: 3px;
+}
+
+.view::-webkit-scrollbar-thumb:hover {
+    background: var(--border-accent);
+}
+
+/* ==========================================================================
+   ANIMATIONS
+   ========================================================================== */
+
+@keyframes glow-pulse {
+    0%, 100% {
+        box-shadow: var(--shadow-glow-red);
+    }
+    50% {
+        box-shadow: 0 0 30px rgba(255, 51, 85, 0.5);
+    }
+}

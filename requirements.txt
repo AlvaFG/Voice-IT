@@ -1,0 +1,45 @@
+# Voice IT - Requirements
+# Self-hosted Wispr Flow alternative
+
+# Core
+# python>=3.10
+
+# Audio
+sounddevice>=0.4.6
+numpy>=1.24.0
+scipy>=1.10.0
+# webrtcvad>=2.0.10  # Optional: requires C compiler, skip for now
+
+# Hotkeys and Input
+pynput>=1.7.6
+pyautogui>=0.9.54
+pyperclip>=1.8.2
+
+# Platform-specific (Windows)
+pywin32>=306; sys_platform == "win32"
+psutil>=5.9.0
+
+# System Tray
+pystray>=0.19.5
+Pillow>=9.5.0
+
+# Desktop UI (PyWebView)
+pywebview>=4.0.0
+
+# AI Providers (API-based)
+groq>=0.4.0                   # Groq Whisper API - fast transcription
+openai>=1.12.0                # OpenAI/ChatGPT API + xAI Grok (compatible)
+google-generativeai>=0.4.0    # Google Gemini API
+
+# Authentication
+keyring>=24.0.0
+cryptography>=41.0.0
+httpx>=0.25.0
+
+# Data
+pyyaml>=6.0
+platformdirs>=3.10.0
+
+# Utilities
+rich>=13.0.0
+typer>=0.9.0

@@ -1,0 +1,63 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg
+*.egg-info/
+dist/
+build/
+eggs/
+.eggs/
+*.manifest
+*.spec
+
+# Logs
+*.log
+debug.log
+
+# Environment
+.env
+.env.local
+.venv/
+venv/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# App data (local user data)
+*.db
+voice_it_data/
+
+# Build artifacts
+*.exe
+
+# API Keys (NEVER commit these)
+*.key
+*_key.txt
+api_keys.json
+
+# Claude Code (development tool)
+.claude/
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+
+# Test coverage
+htmlcov/
+.coverage
+.coverage.*
+.pytest_cache/

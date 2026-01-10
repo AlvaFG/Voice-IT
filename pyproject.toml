@@ -1,0 +1,90 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "voice-it"
+version = "1.0.0"
+description = "Voice-to-text transcription app for Windows. Hold a hotkey, speak, and paste text anywhere."
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.10"
+authors = [
+    {name = "Voice IT Team"}
+]
+keywords = ["voice", "transcription", "speech-to-text", "whisper", "dictation", "windows"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Win32 (MS Windows)",
+    "Intended Audience :: End Users/Desktop",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: Microsoft :: Windows",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Multimedia :: Sound/Audio :: Speech",
+]
+
+dependencies = [
+    # Audio
+    "sounddevice>=0.4.6",
+    "numpy>=1.24.0",
+    "scipy>=1.10.0",
+
+    # Hotkeys and Input
+    "pynput>=1.7.6",
+    "pyautogui>=0.9.54",
+    "pyperclip>=1.8.2",
+
+    # Platform-specific (Windows)
+    "pywin32>=306; sys_platform == 'win32'",
+    "psutil>=5.9.0",
+
+    # System Tray
+    "pystray>=0.19.5",
+    "Pillow>=9.5.0",
+
+    # Desktop UI
+    "pywebview>=4.0.0",
+
+    # AI Providers
+    "groq>=0.4.0",
+    "openai>=1.12.0",
+    "google-generativeai>=0.4.0",
+
+    # Authentication
+    "keyring>=24.0.0",
+    "cryptography>=41.0.0",
+    "httpx>=0.25.0",
+
+    # Data
+    "pyyaml>=6.0",
+    "platformdirs>=3.10.0",
+
+    # Utilities
+    "rich>=13.0.0",
+    "typer>=0.9.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/yourusername/voice-it"
+Repository = "https://github.com/yourusername/voice-it"
+Issues = "https://github.com/yourusername/voice-it/issues"
+
+[project.scripts]
+voice-it = "voice_it.__main__:main"
+
+[project.gui-scripts]
+voice-it-gui = "voice_it.__main__:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["voice_it*"]
+
+[tool.setuptools.package-data]
+voice_it = [
+    "ui/web/**/*",
+    "ui/assets/*",
+    "config/*.yaml",
+]

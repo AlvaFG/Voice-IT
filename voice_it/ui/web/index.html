@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voice IT</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/views.css">
+
+    <style>
+        /* ================================================================
+           INLINE CRITICAL STYLES - App Shell
+           ================================================================ */
+
+        /* Scanline overlay effect */
+        .scanline-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            z-index: 9999;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 0, 0, 0.03) 2px,
+                rgba(0, 0, 0, 0.03) 4px
+            );
+        }
+
+        /* App container */
+        .app {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            background: var(--bg-primary);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Header */
+        .header {
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 var(--space-lg);
+            background: var(--bg-primary);
+            border-bottom: 1px solid var(--border-default);
+            flex-shrink: 0;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+
+        .header-bracket {
+            color: var(--text-muted);
+            font-size: var(--font-size-title);
+        }
+
+        .header-title {
+            font-size: var(--font-size-heading);
+            font-weight: var(--font-weight-bold);
+            color: var(--text-primary);
+            letter-spacing: 2px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+            padding: var(--space-xs) var(--space-sm);
+            background: var(--bg-surface);
+            border: 1px solid var(--border-default);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--text-muted);
+            transition: background var(--duration-fast);
+        }
+
+        .status-dot.connected {
+            background: var(--status-green);
+            box-shadow: 0 0 8px var(--status-green);
+        }
+
+        .status-dot.recording {
+            background: var(--status-red);
+            box-shadow: 0 0 8px var(--status-red);
+            animation: pulse 0.5s ease-in-out infinite alternate;
+        }
+
+        .status-dot.processing {
+            background: var(--amber);
+            animation: pulse 0.8s ease-in-out infinite;
+        }
+
+        .status-text {
+            font-size: var(--font-size-tiny);
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Content area */
+        .content {
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* View containers */
+        .view {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            padding: var(--space-lg);
+            overflow-y: auto;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: opacity var(--duration-normal) ease,
+                        visibility var(--duration-normal) ease,
+                        transform var(--duration-normal) ease;
+        }
+
+        .view.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        /* Footer navigation */
+        .footer {
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            background: var(--bg-surface);
+            border-top: 1px solid var(--border-default);
+            flex-shrink: 0;
+        }
+
+        .nav-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            padding: var(--space-sm) var(--space-md);
+            color: var(--text-muted);
+            transition: color var(--duration-fast);
+            position: relative;
+        }
+
+        .nav-btn:hover {
+            color: var(--text-secondary);
+        }
+
+        .nav-btn.active {
+            color: var(--accent);
+        }
+
+        .nav-btn.active::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 24px;
+            height: 2px;
+            background: var(--accent);
+        }
+
+        .nav-btn i {
+            width: 20px;
+            height: 20px;
+        }
+
+        .nav-label {
+            font-size: var(--font-size-micro);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* ================================================================
+           HOME VIEW - Mission Control Center
+           ================================================================ */
+
+        .home-view {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            gap: var(--space-xxl);
+        }
+
+        /* Mic button container */
+        .mic-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Pulse rings */
+        .pulse-ring {
+            position: absolute;
+            width: 140px;
+            height: 140px;
+            border: 2px solid var(--accent-glow);
+            border-radius: 50%;
+            animation: pulse-ring 2s ease-out infinite;
+        }
+
+        .pulse-ring:nth-child(2) {
+            animation-delay: 0.5s;
+        }
+
+        .pulse-ring:nth-child(3) {
+            animation-delay: 1s;
+        }
+
+        .mic-container.recording .pulse-ring {
+            border-color: rgba(255, 51, 85, 0.3);
+            animation-duration: 1s;
+        }
+
+        .mic-container.processing .pulse-ring {
+            border-color: var(--amber-glow);
+            animation: spin 2s linear infinite;
+        }
+
+        /* Mic button */
+        .mic-btn {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: var(--bg-surface);
+            border: 2px solid var(--border-accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all var(--duration-fast);
+            position: relative;
+            z-index: 1;
+        }
+
+        .mic-btn:hover {
+            border-color: var(--accent);
+            box-shadow: var(--shadow-glow-accent);
+        }
+
+        .mic-btn i {
+            width: 48px;
+            height: 48px;
+            color: var(--accent);
+            transition: color var(--duration-fast);
+        }
+
+        .mic-container.recording .mic-btn {
+            border-color: var(--status-red);
+            background: rgba(255, 51, 85, 0.1);
+            box-shadow: var(--shadow-glow-red);
+            animation: glow-pulse 1s ease-in-out infinite;
+        }
+
+        .mic-container.recording .mic-btn i {
+            color: var(--status-red);
+        }
+
+        .mic-container.processing .mic-btn {
+            border-color: var(--amber);
+            background: rgba(255, 184, 0, 0.1);
+            box-shadow: var(--shadow-glow-amber);
+        }
+
+        .mic-container.processing .mic-btn i {
+            color: var(--amber);
+            animation: spin 1.5s linear infinite;
+        }
+
+        /* Status section */
+        .status-section {
+            text-align: center;
+        }
+
+        .status-main {
+            font-size: var(--font-size-body);
+            color: var(--text-secondary);
+            margin-bottom: var(--space-xs);
+        }
+
+        .status-hint {
+            font-size: var(--font-size-small);
+            color: var(--text-muted);
+        }
+
+        .status-hint kbd {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-default);
+            padding: 2px 6px;
+            font-family: var(--font-mono);
+            font-size: var(--font-size-tiny);
+            color: var(--accent);
+        }
+
+        /* Recent transcriptions */
+        .recent-section {
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            margin-bottom: var(--space-md);
+            padding-bottom: var(--space-sm);
+            border-bottom: 1px solid var(--border-default);
+        }
+
+        .section-title {
+            font-size: var(--font-size-tiny);
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .recent-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-sm);
+        }
+
+        .recent-item {
+            padding: var(--space-sm) var(--space-md);
+            background: var(--bg-surface);
+            border: 1px solid var(--border-default);
+            transition: border-color var(--duration-fast);
+        }
+
+        .recent-item:hover {
+            border-color: var(--border-accent);
+        }
+
+        .recent-text {
+            font-size: var(--font-size-small);
+            color: var(--text-primary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .recent-time {
+            font-size: var(--font-size-micro);
+            color: var(--text-muted);
+            margin-top: var(--space-xxs);
+        }
+
+        .recent-empty {
+            text-align: center;
+            padding: var(--space-xl);
+            color: var(--text-muted);
+            font-size: var(--font-size-small);
+        }
+
+        /* ================================================================
+           OTHER VIEWS - Placeholders
+           ================================================================ */
+
+        .view-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: var(--space-lg);
+        }
+
+        .view-title {
+            font-size: var(--font-size-title);
+            font-weight: var(--font-weight-bold);
+            color: var(--text-primary);
+            letter-spacing: 1px;
+        }
+
+        .view-badge {
+            background: var(--accent-dim);
+            color: var(--accent);
+            padding: var(--space-xxs) var(--space-sm);
+            font-size: var(--font-size-micro);
+            text-transform: uppercase;
+        }
+
+        /* Search input */
+        .search-container {
+            position: relative;
+            margin-bottom: var(--space-lg);
+        }
+
+        .search-input {
+            width: 100%;
+            padding: var(--space-sm) var(--space-md);
+            padding-left: 40px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-default);
+            color: var(--text-primary);
+            font-size: var(--font-size-body);
+            transition: border-color var(--duration-fast);
+        }
+
+        .search-input:focus {
+            border-color: var(--accent);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: var(--space-md);
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            width: 16px;
+            height: 16px;
+        }
+
+        /* List container */
+        .list-container {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-sm);
+        }
+
+        /* Empty state */
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-xxxl) var(--space-lg);
+            text-align: center;
+        }
+
+        .empty-state i {
+            width: 48px;
+            height: 48px;
+            color: var(--text-muted);
+            margin-bottom: var(--space-lg);
+            opacity: 0.5;
+        }
+
+        .empty-state-text {
+            color: var(--text-muted);
+            font-size: var(--font-size-small);
+        }
+    </style>
+</head>
+<body>
+    <!-- Scanline overlay for CRT effect -->
+    <div class="scanline-overlay"></div>
+
+    <div class="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <span class="header-bracket">┌</span>
+                <span class="header-title">VOICE IT</span>
+                <span class="header-bracket">┐</span>
+            </div>
+            <div class="header-right">
+                <div class="status-indicator">
+                    <div class="status-dot" id="statusDot"></div>
+                    <span class="status-text" id="statusText">OFFLINE</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Content -->
+        <main class="content">
+            <!-- Home View -->
+            <div class="view active" id="viewHome" data-view="home">
+                <div class="home-view">
+                    <div class="mic-container" id="micContainer">
+                        <div class="pulse-ring"></div>
+                        <div class="pulse-ring"></div>
+                        <div class="pulse-ring"></div>
+                        <button class="mic-btn" id="micBtn">
+                            <i data-lucide="mic"></i>
+                        </button>
+                    </div>
+
+                    <div class="status-section">
+                        <div class="status-main" id="statusMain">Ready to transcribe</div>
+                        <div class="status-hint">
+                            Hold <kbd>Ctrl</kbd> + <kbd>Win</kbd> to record
+                        </div>
+                    </div>
+
+                    <div class="recent-section">
+                        <div class="section-header">
+                            <span class="section-title">Recent</span>
+                        </div>
+                        <div class="recent-list" id="recentList">
+                            <div class="recent-empty">
+                                No transcriptions yet
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- History View -->
+            <div class="view" id="viewHistory" data-view="history">
+                <div class="view-header">
+                    <span class="view-title">HISTORY</span>
+                    <span class="view-badge" id="historyCount">0</span>
+                </div>
+                <div class="search-container">
+                    <i data-lucide="search" class="search-icon"></i>
+                    <input type="text" class="search-input" placeholder="Search transcriptions..." id="historySearch">
+                </div>
+                <div class="list-container" id="historyList">
+                    <div class="empty-state">
+                        <i data-lucide="clock"></i>
+                        <p class="empty-state-text">No history yet</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings View -->
+            <div class="view" id="viewSettings" data-view="settings">
+                <div class="view-header">
+                    <span class="view-title">SETTINGS</span>
+                </div>
+                <div class="list-container" id="settingsList">
+                    <!-- Settings will be populated by JS -->
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer Navigation -->
+        <footer class="footer">
+            <button class="nav-btn active" data-nav="home">
+                <i data-lucide="mic"></i>
+                <span class="nav-label">Home</span>
+            </button>
+            <button class="nav-btn" data-nav="history">
+                <i data-lucide="clock"></i>
+                <span class="nav-label">History</span>
+            </button>
+            <button class="nav-btn" data-nav="settings">
+                <i data-lucide="settings"></i>
+                <span class="nav-label">Settings</span>
+            </button>
+        </footer>
+
+        <!-- API Key Modal -->
+        <div id="apiKeyModal" class="modal hidden">
+            <div class="modal-overlay" onclick="App.closeApiKeyModal()"></div>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">Connect Provider</h3>
+                    <button class="modal-close" onclick="App.closeApiKeyModal()">
+                        <i data-lucide="x"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p id="apiKeyProviderName" class="modal-description">Enter your API key:</p>
+                    <input type="password" id="apiKeyInput" class="input-field" placeholder="sk-..." autocomplete="off">
+                    <p class="modal-hint">Your API key is stored securely on your device.</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-ghost" onclick="App.closeApiKeyModal()">Cancel</button>
+                    <button class="btn btn-primary" onclick="App.submitApiKey()">Connect</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Error Modal -->
+        <div id="errorModal" class="modal hidden">
+            <div class="modal-overlay" onclick="App.closeErrorModal()"></div>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">Cannot Connect</h3>
+                    <button class="modal-close" onclick="App.closeErrorModal()">
+                        <i data-lucide="x"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p id="errorMessage" class="modal-description"></p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" onclick="App.closeErrorModal()">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Initialize Lucide icons -->
+    <script>
+        lucide.createIcons();
+    </script>
+
+    <!-- API and App JS -->
+    <script src="js/api.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
