@@ -159,17 +159,25 @@ Download the latest `.exe` from [Releases](https://github.com/AlvaFG/Voice-IT/re
 
 ### Auto-Start with Windows
 
-**Method 1: Startup Folder**
-1. Press `Win + R`, type `shell:startup`, press Enter
-2. Copy your Voice IT shortcut into this folder
-3. Done! Voice IT will start when Windows boots
+**Method 1: From Settings (Recommended)**
+1. Open Voice IT
+2. Go to Settings
+3. Enable "Start with Windows"
+4. Done! Voice IT will start minimized to system tray when Windows boots
 
-**Method 2: Task Scheduler (for .exe)**
-1. Open Task Scheduler
-2. Create Basic Task → Name: "Voice IT"
-3. Trigger: "When I log on"
-4. Action: "Start a program" → Browse to `VoiceIT.exe`
-5. Finish
+**Method 2: Command Line**
+```bash
+# Start minimized to system tray (no window in taskbar)
+VoiceIT.exe --background
+
+# Or from source
+python -m voice_it --background
+```
+
+**Method 3: Startup Folder (Manual)**
+1. Press `Win + R`, type `shell:startup`, press Enter
+2. Create a shortcut to `VoiceIT.exe --background`
+3. Done! Voice IT will start in background when Windows boots
 
 ---
 
@@ -193,6 +201,16 @@ Download the latest `.exe` from [Releases](https://github.com/AlvaFG/Voice-IT/re
 |--------|--------|
 | Dictation | `Ctrl + Win` (hold to record) |
 
+### Command Line Options
+
+```bash
+# Normal start (shows window)
+VoiceIT.exe
+
+# Background mode (system tray only, no window in taskbar)
+VoiceIT.exe --background
+```
+
 ### System Tray
 
 - **Left click**: Open/hide main window
@@ -200,11 +218,13 @@ Download the latest `.exe` from [Releases](https://github.com/AlvaFG/Voice-IT/re
 - **X button**: Minimizes to tray (doesn't quit)
 - **Exit**: Right-click tray -> Exit
 
+When minimized or in background mode, the app only shows in the system tray (notification area), not in the taskbar.
+
 ---
 
 ## Configuration
 
-Settings are stored in: `%LOCALAPPDATA%\Voice IT\config.yaml`
+Settings are stored in: `%APPDATA%\Voice IT\config.yaml`
 
 You can configure:
 - Active AI provider
@@ -268,7 +288,8 @@ voice_it/
 ├── core/                # Core functionality
 │   ├── audio_engine.py  # Audio recording
 │   ├── hotkey_manager.py# Hotkey listener
-│   └── paste_handler.py # Clipboard/paste
+│   ├── paste_handler.py # Clipboard/paste
+│   └── startup.py       # Windows auto-start
 ├── features/
 │   └── dictation.py     # Dictation flow
 ├── providers/           # AI providers

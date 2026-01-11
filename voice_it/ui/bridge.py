@@ -360,3 +360,33 @@ class VoiceITAPI:
             {"code": "zh", "name": "Chinese"},
             {"code": "ja", "name": "Japanese"},
         ]
+
+    # =========================================================================
+    # STARTUP SETTINGS
+    # =========================================================================
+
+    def is_startup_enabled(self) -> bool:
+        """Check if the application is set to start with Windows."""
+        from voice_it.core.startup import is_startup_enabled
+        return is_startup_enabled()
+
+    def set_startup_enabled(self, enabled: bool) -> bool:
+        """
+        Enable or disable auto-start with Windows.
+
+        Args:
+            enabled: True to enable, False to disable.
+
+        Returns:
+            True if successful, False otherwise.
+        """
+        from voice_it.core.startup import set_startup_enabled as set_startup
+        try:
+            # Always start minimized when auto-starting with Windows
+            success = set_startup(enabled, start_minimized=True)
+            if success:
+                self._config.set("general.start_with_os", enabled)
+            return success
+        except Exception as e:
+            print(f"Error setting startup: {e}")
+            return False

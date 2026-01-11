@@ -245,8 +245,13 @@ class VoiceITApp:
             print(f"Error disconnecting from {provider_name}: {e}")
             return False
 
-    def run(self):
-        """Run the Voice IT application."""
+    def run(self, start_hidden: bool = False):
+        """
+        Run the Voice IT application.
+
+        Args:
+            start_hidden: If True, start minimized to tray without showing window.
+        """
         print(f"Starting {__app_name__} v{__version__}...")
 
         try:
@@ -280,7 +285,7 @@ class VoiceITApp:
 
             # Run main window (blocking - runs the PyWebView event loop)
             if self.window_manager:
-                self.window_manager.run()
+                self.window_manager.run(start_hidden=start_hidden)
 
         except Exception as e:
             print(f"Error running application: {e}")

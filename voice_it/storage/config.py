@@ -164,6 +164,10 @@ class Config:
         config[keys[-1]] = value
         self._save()
 
+    def get_all(self) -> Dict[str, Any]:
+        """Get all configuration values."""
+        return self._config.copy()
+
     @property
     def config_dir(self) -> Path:
         """Get the configuration directory path."""
