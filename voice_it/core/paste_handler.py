@@ -3,6 +3,7 @@ Voice IT - Paste Handler
 Handles clipboard operations and pasting text to active applications.
 """
 
+import logging
 import platform
 import time
 from typing import Optional
@@ -13,6 +14,8 @@ try:
 except ImportError:
     pyperclip = None
     pyautogui = None
+
+logger = logging.getLogger(__name__)
 
 
 class PasteHandler:
@@ -45,30 +48,26 @@ class PasteHandler:
         Returns:
             True if successful, False otherwise
         """
-        print(f"[TRACE] paste_text called with {len(text)} chars")
+        logger.debug("paste_text called with %d chars", len(text))
 
         if not text:
             return False
 
         try:
             # Step 1: Copy to clipboard
-            print("[TRACE] paste_text: Copying to clipboard...")
             pyperclip.copy(text)
 
             # Step 2: Wait for any hotkey keys to be released
             # This prevents interference when user just released Ctrl+Win
-            print("[TRACE] paste_text: Waiting 300ms for keys to release...")
             time.sleep(0.3)
 
             # Step 3: Paste using platform-specific shortcut
-            print("[TRACE] paste_text: Sending Ctrl+V...")
             if self._system == "Darwin":  # macOS
                 pyautogui.hotkey("command", "v")
             else:  # Windows and Linux
                 pyautogui.hotkey("ctrl", "v")
 
             # Step 4: Small delay after paste
-            print("[TRACE] paste_text: Done, waiting 100ms...")
             time.sleep(0.1)
 
             # Step 5: Optional - clear clipboard after pasting
@@ -76,11 +75,11 @@ class PasteHandler:
                 time.sleep(0.5)
                 pyperclip.copy("")
 
-            print("[TRACE] paste_text: Complete")
+            logger.debug("paste_text: complete")
             return True
 
         except Exception as e:
-            print(f"Error pasting text: {e}")
+            logger.error("Error pasting text: %s", e)
             return False
 
     def copy_to_clipboard(self, text: str) -> bool:
@@ -97,7 +96,7 @@ class PasteHandler:
             pyperclip.copy(text)
             return True
         except Exception as e:
-            print(f"Error copying to clipboard: {e}")
+            logger.error("Error copying to clipboard: %s", e)
             return False
 
     def get_clipboard(self) -> Optional[str]:
@@ -110,7 +109,7 @@ class PasteHandler:
         try:
             return pyperclip.paste()
         except Exception as e:
-            print(f"Error getting clipboard: {e}")
+            logger.error("Error getting clipboard: %s", e)
             return None
 
     def copy_selected_text(self) -> Optional[str]:
@@ -154,7 +153,7 @@ class PasteHandler:
             return None
 
         except Exception as e:
-            print(f"Error copying selected text: {e}")
+            logger.error("Error copying selected text: %s", e)
             return None
 
     def type_text(self, text: str, interval: float = 0.01) -> bool:
@@ -173,7 +172,7 @@ class PasteHandler:
             pyautogui.typewrite(text, interval=interval)
             return True
         except Exception as e:
-            print(f"Error typing text: {e}")
+            logger.error("Error typing text: %s", e)
             return False
 
 

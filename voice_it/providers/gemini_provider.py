@@ -4,6 +4,7 @@ Uses Google's Gemini API for speech-to-text transcription and text transformatio
 """
 
 import base64
+import logging
 import time
 from typing import Optional
 
@@ -12,7 +13,10 @@ try:
 except ImportError:
     genai = None
 
+logger = logging.getLogger(__name__)
+
 from voice_it.providers.base_provider import (
+    API_TIMEOUT,
     BaseProvider,
     ProviderStatus,
     TranscriptionResult,
@@ -20,6 +24,9 @@ from voice_it.providers.base_provider import (
 )
 from voice_it.storage.auth_store import AuthStore
 from voice_it.storage.config import Config
+
+# Cap how long a Gemini API call can hang (seconds).
+_REQUEST_OPTIONS = {"timeout": API_TIMEOUT}
 
 
 class GeminiAdapter(BaseProvider):
@@ -70,6 +77,19 @@ class GeminiAdapter(BaseProvider):
             self._model = genai.GenerativeModel(self.MODEL_NAME)
         return self._model
 
+    @staticmethod
+    def _generate(model, content):
+        """
+        Call generate_content with a request timeout, degrading gracefully if
+        the installed google-generativeai version doesn't accept
+        request_options (older/forked builds): retry once without it.
+        """
+        try:
+            return model.generate_content(content, request_options=_REQUEST_OPTIONS)
+        except TypeError:
+            logger.warning("Gemini SDK rejected request_options; retrying without timeout")
+            return model.generate_content(content)
+
     async def authenticate(self, api_key: str = None) -> bool:
         """
         Authenticate with Google AI using an API key.
@@ -102,7 +122,7 @@ class GeminiAdapter(BaseProvider):
             try:
                 model = genai.GenerativeModel(self.MODEL_NAME)
                 # Simple test to validate API key
-                response = model.generate_content("Say 'ok'")
+                response = self._generate(model, "Say 'ok'")
                 if not response.text:
                     raise Exception("Invalid response")
                 self._model = model
@@ -166,7 +186,7 @@ class GeminiAdapter(BaseProvider):
             }
 
             # Generate transcription
-            response = model.generate_content([audio_part, prompt])
+            response = self._generate(model, [audio_part, prompt])
 
             if not response.text:
                 return TranscriptionResult(
@@ -227,7 +247,7 @@ Text to transform:
             prompt += "\n\nReturn ONLY the transformed text, nothing else."
 
             # Generate transformation
-            response = model.generate_content(prompt)
+            response = self._generate(model, prompt)
 
             if not response.text:
                 return TransformResult(
@@ -288,7 +308,7 @@ Text to transform:
                 return False
 
             # Test with a simple request
-            response = model.generate_content("Say 'ok'")
+            response = self._generate(model, "Say 'ok'")
             return bool(response.text)
 
         except Exception:

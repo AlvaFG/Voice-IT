@@ -13,6 +13,8 @@ except ImportError:
     Groq = None
 
 from voice_it.providers.base_provider import (
+    API_MAX_RETRIES,
+    API_TIMEOUT,
     BaseProvider,
     ProviderStatus,
     TranscriptionResult,
@@ -64,12 +66,12 @@ class GroqProvider(BaseProvider):
         api_key = self.auth_store.get_token(self.PROVIDER_NAME, "api_key")
         if api_key:
             self._api_key = api_key
-            self._client = Groq(api_key=api_key)
+            self._client = Groq(api_key=api_key, timeout=API_TIMEOUT, max_retries=API_MAX_RETRIES)
 
     def _get_client(self) -> Optional[Groq]:
         """Get or create Groq client."""
         if self._client is None and self._api_key:
-            self._client = Groq(api_key=self._api_key)
+            self._client = Groq(api_key=self._api_key, timeout=API_TIMEOUT, max_retries=API_MAX_RETRIES)
         return self._client
 
     async def authenticate(self, api_key: str = None) -> bool:
@@ -99,7 +101,7 @@ class GroqProvider(BaseProvider):
                 return False
 
             # Create client and validate
-            self._client = Groq(api_key=self._api_key)
+            self._client = Groq(api_key=self._api_key, timeout=API_TIMEOUT, max_retries=API_MAX_RETRIES)
 
             # Test the API key with a simple request
             # Using models.list() as a lightweight validation
@@ -282,7 +284,7 @@ class GroqProvider(BaseProvider):
         stored_key = self.auth_store.get_token(self.PROVIDER_NAME, "api_key")
         if stored_key:
             self._api_key = stored_key
-            self._client = Groq(api_key=stored_key)
+            self._client = Groq(api_key=stored_key, timeout=API_TIMEOUT, max_retries=API_MAX_RETRIES)
             return True
 
         return False
