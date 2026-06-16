@@ -11,6 +11,12 @@ from typing import Callable, Optional
 from voice_it.storage.auth_store import AuthStore
 from voice_it.storage.config import Config
 
+# Network safety defaults shared by the HTTP/SDK-based providers: cap how long
+# an API call can hang, with a couple of automatic retries (handled natively by
+# the Groq/OpenAI SDKs).
+API_TIMEOUT = 30.0
+API_MAX_RETRIES = 2
+
 
 class ProviderStatus(Enum):
     """Status of a provider connection."""

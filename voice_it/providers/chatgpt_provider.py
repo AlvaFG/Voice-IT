@@ -13,6 +13,8 @@ except ImportError:
     OpenAI = None
 
 from voice_it.providers.base_provider import (
+    API_MAX_RETRIES,
+    API_TIMEOUT,
     BaseProvider,
     ProviderStatus,
     TranscriptionResult,
@@ -61,12 +63,12 @@ class ChatGPTAdapter(BaseProvider):
         api_key = self.auth_store.get_token(self.PROVIDER_NAME, "api_key")
         if api_key:
             self._api_key = api_key
-            self._client = OpenAI(api_key=api_key)
+            self._client = OpenAI(api_key=api_key, timeout=API_TIMEOUT, max_retries=API_MAX_RETRIES)
 
     def _get_client(self) -> Optional[OpenAI]:
         """Get or create OpenAI client."""
         if self._client is None and self._api_key:
-            self._client = OpenAI(api_key=self._api_key)
+            self._client = OpenAI(api_key=self._api_key, timeout=API_TIMEOUT, max_retries=API_MAX_RETRIES)
         return self._client
 
     async def authenticate(self, api_key: str = None) -> bool:
@@ -95,7 +97,7 @@ class ChatGPTAdapter(BaseProvider):
                 return False
 
             # Create client and validate
-            self._client = OpenAI(api_key=self._api_key)
+            self._client = OpenAI(api_key=self._api_key, timeout=API_TIMEOUT, max_retries=API_MAX_RETRIES)
 
             # Test the API key with a simple request
             try:
@@ -252,7 +254,7 @@ class ChatGPTAdapter(BaseProvider):
         stored_key = self.auth_store.get_token(self.PROVIDER_NAME, "api_key")
         if stored_key:
             self._api_key = stored_key
-            self._client = OpenAI(api_key=stored_key)
+            self._client = OpenAI(api_key=stored_key, timeout=API_TIMEOUT, max_retries=API_MAX_RETRIES)
             return True
 
         return False

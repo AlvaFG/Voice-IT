@@ -6,7 +6,10 @@ Run with: python -m voice_it
 
 import sys
 import platform
+import logging
 import argparse
+
+from voice_it import __version__, __app_name__
 
 
 def parse_args():
@@ -18,6 +21,11 @@ def parse_args():
         "--background",
         action="store_true",
         help="Start minimized to system tray (no window)"
+    )
+    parser.add_argument(
+        "--debug",
+        action="store_true",
+        help="Enable verbose debug logging"
     )
     return parser.parse_args()
 
@@ -32,8 +40,15 @@ def main():
     # Parse arguments
     args = parse_args()
 
+    # Configure logging once for the whole app. Debug-level logs (the former
+    # [DEBUG]/[TRACE] prints) stay silent unless --debug is passed.
+    logging.basicConfig(
+        level=logging.DEBUG if args.debug else logging.INFO,
+        format="%(asctime)s %(levelname)s %(name)s: %(message)s",
+    )
+
     # Print startup info
-    print(f"Voice IT v0.1.0")
+    print(f"{__app_name__} v{__version__}")
     print(f"Platform: {platform.system()} {platform.release()}")
     print(f"Python: {sys.version}")
     if args.background:

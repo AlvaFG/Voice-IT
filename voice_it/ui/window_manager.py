@@ -78,6 +78,7 @@ class WindowManager:
         self._window: Optional[webview.Window] = None
         self._api: Optional[VoiceITAPI] = None
         self._is_visible = False
+        self._start_hidden = False  # background mode: keep window hidden on load
         self._hwnd = None  # Windows handle for taskbar manipulation
 
         # Create API bridge with callbacks
@@ -97,12 +98,27 @@ class WindowManager:
 
     def _on_loaded(self):
         """Called when the web page finishes loading."""
-        self._is_visible = True
+        # Note: do NOT force _is_visible here. The page also loads when the
+        # window is created hidden (background mode); visibility is owned by
+        # create()/show()/hide().
         if self._window and self._api:
             self._api.set_window(self._window)
 
-    def create(self):
-        """Create the main window."""
+        # Belt-and-suspenders for background mode: if the backend ignored
+        # create_window(hidden=True), make sure the window is hidden now so it
+        # never lingers on screen at startup.
+        if self._start_hidden and self._window:
+            self._window.hide()
+            self._is_visible = False
+
+    def create(self, hidden: bool = False):
+        """
+        Create the main window.
+
+        Args:
+            hidden: If True, the window is created hidden so it never flashes
+                on screen (used for background/autostart mode).
+        """
         self._window = webview.create_window(
             title=__app_name__,
             url=get_web_path("index.html"),
@@ -114,7 +130,10 @@ class WindowManager:
             easy_drag=False,
             js_api=self._api,
             background_color="#0D0D0D",
+            hidden=hidden,
         )
+        self._is_visible = not hidden
+        self._start_hidden = hidden
 
         # Set up event handlers
         self._window.events.loaded += self._on_loaded
@@ -128,7 +147,9 @@ class WindowManager:
             start_hidden: If True, start with window hidden (minimized to tray).
         """
         if self._window is None:
-            self.create()
+            # Create the window already hidden in background mode so it never
+            # flashes on screen (no 0.8s visible window before hiding).
+            self.create(hidden=start_hidden)
 
         # Set window icon on Windows before starting
         if sys.platform == "win32":
@@ -136,24 +157,8 @@ class WindowManager:
             if icon_path:
                 self._schedule_icon_update(icon_path, start_hidden)
 
-        # If starting hidden, hide window immediately after creation
-        if start_hidden:
-            self._schedule_hide()
-
         # Start webview - this blocks until all windows are closed
         webview.start(debug=False)
-
-    def _schedule_hide(self):
-        """Schedule hiding the window after it's created (for background mode)."""
-        def hide_window():
-            import time
-            time.sleep(0.8)  # Wait for window to be created
-            if self._window:
-                self._window.hide()
-                self._is_visible = False
-            # Note: _hide_from_taskbar is called in _schedule_icon_update when start_hidden=True
-
-        threading.Thread(target=hide_window, daemon=True).start()
 
     def _schedule_icon_update(self, icon_path: str, start_hidden: bool = False):
         """Schedule icon update after window is created."""

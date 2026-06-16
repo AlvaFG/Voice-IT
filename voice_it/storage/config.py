@@ -3,6 +3,7 @@ Voice IT - Configuration Management
 Handles loading, saving, and accessing application settings.
 """
 
+import logging
 import os
 from pathlib import Path
 from typing import Any, Dict, Optional
@@ -11,6 +12,8 @@ import yaml
 from platformdirs import user_config_dir, user_data_dir
 
 from voice_it import __app_name__
+
+logger = logging.getLogger(__name__)
 
 
 class Config:
@@ -99,7 +102,7 @@ class Config:
                 # Merge with defaults (in case new options were added)
                 self._config = self._merge_dicts(self.DEFAULT_CONFIG.copy(), loaded)
             except Exception as e:
-                print(f"Error loading config: {e}")
+                logger.error("Error loading config: %s", e)
                 self._config = self.DEFAULT_CONFIG.copy()
         else:
             self._config = self.DEFAULT_CONFIG.copy()
@@ -111,7 +114,7 @@ class Config:
             with open(self._config_file, "w", encoding="utf-8") as f:
                 yaml.dump(self._config, f, default_flow_style=False, indent=2)
         except Exception as e:
-            print(f"Error saving config: {e}")
+            logger.error("Error saving config: %s", e)
 
     def _merge_dicts(self, base: Dict, override: Dict) -> Dict:
         """Recursively merge override into base dict."""
@@ -201,9 +204,6 @@ def get_config() -> Config:
     """Get the global configuration instance."""
     global _config
     if _config is None:
-        print("[DEBUG] get_config: Creating new Config instance")
         _config = Config()
-        print(f"[DEBUG] get_config: Config id={id(_config)}")
-    else:
-        print(f"[DEBUG] get_config: Returning existing Config id={id(_config)}")
+        logger.debug("get_config: created Config id=%s", id(_config))
     return _config

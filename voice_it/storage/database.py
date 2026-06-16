@@ -4,6 +4,7 @@ SQLite database for storing transcription history.
 """
 
 import sqlite3
+import threading
 from pathlib import Path
 from typing import List, Optional, Dict, Any
 
@@ -28,6 +29,9 @@ class Database:
 
         self.db_path = db_path
         self._connection: Optional[sqlite3.Connection] = None
+        # The connection is shared across threads (check_same_thread=False),
+        # so every access must be serialized through this lock.
+        self._lock = threading.Lock()
 
         # Initialize database
         self._init_db()
@@ -41,23 +45,24 @@ class Database:
 
     def _init_db(self):
         """Initialize database tables."""
-        conn = self._get_connection()
-        cursor = conn.cursor()
+        with self._lock:
+            conn = self._get_connection()
+            cursor = conn.cursor()
 
-        # History table
-        cursor.execute("""
-            CREATE TABLE IF NOT EXISTS history (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                text TEXT NOT NULL,
-                raw_text TEXT,
-                mode TEXT DEFAULT 'dictation',
-                app_name TEXT,
-                provider TEXT,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-            )
-        """)
+            # History table
+            cursor.execute("""
+                CREATE TABLE IF NOT EXISTS history (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    text TEXT NOT NULL,
+                    raw_text TEXT,
+                    mode TEXT DEFAULT 'dictation',
+                    app_name TEXT,
+                    provider TEXT,
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                )
+            """)
 
-        conn.commit()
+            conn.commit()
 
     # ========== History Methods ==========
 
@@ -75,19 +80,20 @@ class Database:
         Returns:
             The ID of the new entry
         """
-        conn = self._get_connection()
-        cursor = conn.cursor()
+        with self._lock:
+            conn = self._get_connection()
+            cursor = conn.cursor()
 
-        cursor.execute(
-            """
-            INSERT INTO history (text, raw_text, mode, app_name, provider)
-            VALUES (?, ?, ?, ?, ?)
-            """,
-            (text, raw_text, mode, app_name, provider),
-        )
-        conn.commit()
+            cursor.execute(
+                """
+                INSERT INTO history (text, raw_text, mode, app_name, provider)
+                VALUES (?, ?, ?, ?, ?)
+                """,
+                (text, raw_text, mode, app_name, provider),
+            )
+            conn.commit()
 
-        return cursor.lastrowid
+            return cursor.lastrowid
 
     def get_history(
         self,
@@ -106,50 +112,53 @@ class Database:
         Returns:
             List of history entries
         """
-        conn = self._get_connection()
-        cursor = conn.cursor()
+        with self._lock:
+            conn = self._get_connection()
+            cursor = conn.cursor()
 
-        if search:
-            cursor.execute(
-                """
-                SELECT * FROM history
-                WHERE text LIKE ?
-                ORDER BY created_at DESC
-                LIMIT ? OFFSET ?
-                """,
-                (f"%{search}%", limit, offset),
-            )
-        else:
-            cursor.execute(
-                """
-                SELECT * FROM history
-                ORDER BY created_at DESC
-                LIMIT ? OFFSET ?
-                """,
-                (limit, offset),
-            )
+            if search:
+                cursor.execute(
+                    """
+                    SELECT * FROM history
+                    WHERE text LIKE ?
+                    ORDER BY created_at DESC
+                    LIMIT ? OFFSET ?
+                    """,
+                    (f"%{search}%", limit, offset),
+                )
+            else:
+                cursor.execute(
+                    """
+                    SELECT * FROM history
+                    ORDER BY created_at DESC
+                    LIMIT ? OFFSET ?
+                    """,
+                    (limit, offset),
+                )
 
-        return [dict(row) for row in cursor.fetchall()]
+            return [dict(row) for row in cursor.fetchall()]
 
     def delete_history(self, entry_id: int) -> bool:
         """Delete a history entry."""
-        conn = self._get_connection()
-        cursor = conn.cursor()
+        with self._lock:
+            conn = self._get_connection()
+            cursor = conn.cursor()
 
-        cursor.execute("DELETE FROM history WHERE id = ?", (entry_id,))
-        conn.commit()
+            cursor.execute("DELETE FROM history WHERE id = ?", (entry_id,))
+            conn.commit()
 
-        return cursor.rowcount > 0
+            return cursor.rowcount > 0
 
     def clear_history(self) -> int:
         """Clear all history entries. Returns number of deleted entries."""
-        conn = self._get_connection()
-        cursor = conn.cursor()
+        with self._lock:
+            conn = self._get_connection()
+            cursor = conn.cursor()
 
-        cursor.execute("DELETE FROM history")
-        conn.commit()
+            cursor.execute("DELETE FROM history")
+            conn.commit()
 
-        return cursor.rowcount
+            return cursor.rowcount
 
     def get_dictionary_for_prompt(self) -> Optional[str]:
         """
